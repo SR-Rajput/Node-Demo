@@ -6,7 +6,7 @@ pipeline {
         DOCKER_HUB_REPO = 'exampleuser/my-node-app' // Your Docker Hub repository name
         DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'
         PATH = "$PATH:/snap/bin/"
-         DOCKER_HUB_REPO = 'https://hub.docker.com/repository/docker/sr88007/my-node-app/general'
+         DOCKER_HUB_REPO = 'sr88007/my-node-app'
     }
 
     stages {

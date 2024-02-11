@@ -5,7 +5,7 @@ pipeline {
         DOCKER_IMAGE = 'my-node-app' // Your Docker image name
         DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'
         PATH = "$PATH:/snap/bin/"
-         DOCKER_HUB_REPO = 'sr88007/my-node-app'
+        DOCKER_HUB_REPO = 'sr88007/my-node-app' // Your Docker Hub repository name
     }
 
     stages {
@@ -18,18 +18,27 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build('my-node-app')
+                    docker.build(DOCKER_IMAGE)
                 }
             }
         }
 
-     
-       
+        stage('Docker Login') {
+            steps {
+                script {
+                    // Docker login using credentials from Jenkins
+                    withCredentials([usernamePassword(credentialsId: DOCKER_HUB_CREDENTIALS, passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                    }
+                }
+            }
+        }
+
         stage('Tag Docker Image') {
             steps {
                 script {
                     // Tag Docker image
-                    docker.tag(DOCKER_IMAGE, "${DOCKER_HUB_REPO}:latest")
+                    sh "docker tag ${DOCKER_IMAGE} ${DOCKER_HUB_REPO}"
                 }
             }
         }
@@ -38,9 +47,7 @@ pipeline {
             steps {
                 script {
                     // Push Docker image to Docker Hub
-                    docker.withRegistry('', DOCKER_HUB_CREDENTIALS) {
-                        docker.image("${DOCKER_HUB_REPO}:latest").push()
-                    }
+                    sh "docker push ${DOCKER_HUB_REPO}"
                 }
             }
         }

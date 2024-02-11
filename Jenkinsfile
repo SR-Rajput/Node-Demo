@@ -4,7 +4,9 @@ pipeline {
    environment {
         DOCKER_IMAGE = 'my-node-app' // Your Docker image name
         DOCKER_HUB_REPO = 'exampleuser/my-node-app' // Your Docker Hub repository name
+        DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'
         PATH = "$PATH:/snap/bin/"
+       
     }
 
     
@@ -24,4 +26,14 @@ pipeline {
                 }
             }
         } }
+
+      stage('Push Docker Image') {
+            steps {
+                script {
+                    // Push Docker image to Docker Hub
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
+                        docker.image('my-node-app').push('latest')
+                    }
+                }
+            }}
 }

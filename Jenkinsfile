@@ -59,7 +59,12 @@ pipeline {
             steps {
                 // Pull Docker image from Docker Hub to /home directory on AWS Jenkins server
                 withCredentials([sshUserPrivateKey(credentialsId: 'aws-credentials', keyFileVariable: 'SSH_KEY_FILE', usernameVariable: 'SSH_USERNAME')]) {
-                    sh "ssh -i ${SSH_KEY_FILE} ubuntu@${AWS_SERVER_IP} 'sudo docker pull ${DOCKER_HUB_REPO}'"
+                       sh """
+                ssh -i ${SSH_KEY_FILE} ${SSH_USERNAME}@${AWS_SERVER_IP} '
+                    sudo docker pull ${DOCKER_HUB_REPO} &&
+                    sudo docker-compose -f /home/docker-compose.yaml up -d
+                '
+            """
                 }
             }
         }

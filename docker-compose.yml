@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   my-node-app:
-    image: sr88007/my-node-app
+    image: my-node-app:latest
     ports:
       - "3000:3000"
       - "3001:3000"

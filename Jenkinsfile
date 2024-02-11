@@ -6,6 +6,7 @@ pipeline {
         DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'
         PATH = "$PATH:/snap/bin/"
         DOCKER_HUB_REPO = 'sr88007/my-node-app' // Your Docker Hub repository name
+         AWS_SERVER_IP = '65.2.130.30'
     }
 
     stages {
@@ -53,14 +54,12 @@ pipeline {
         }
     
     
-     stage('Deploy on AWS Jenkins Server') {
+stage('Deploy on AWS Jenkins Server') {
             steps {
-                // Pull Docker image from Docker Hub
-                sh "docker pull ${DOCKER_HUB_REPO}"
-
-                // SSH into AWS Jenkins server and run Docker run command to deploy the application
-                sshagent(['aws-credentials']) {
-                    sh "ssh -o StrictHostKeyChecking=no root@65.2.130.30 'docker run -d --name my-node-app-instance -p 3000:3000 ${DOCKER_HUB_REPO}'"
+                
+            // Pull Docker image from Docker Hub to /home directory on AWS Jenkins server
+                withCredentials([usernamePassword(credentialsId: 'aws-credentials', usernameVariable: 'SSH_USERNAME', passwordVariable: 'SSH_PASSWORD')]) {
+                    sh "sshpass -p ${SSH_PASSWORD} ssh -o StrictHostKeyChecking=no ${SSH_USERNAME}@${AWS_SERVER_IP} 'docker pull ${DOCKER_HUB_REPO}'"
                 }
             }
         }

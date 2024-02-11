@@ -62,7 +62,8 @@ pipeline {
                        sh """
                 ssh -i ${SSH_KEY_FILE} ubuntu@${AWS_SERVER_IP} '
                     sudo docker pull ${DOCKER_HUB_REPO} &&
-                    sudo docker-compose -f docker-compose.yaml up -d
+                    cd /var/lib/jenkins/workspace/node_js/ &&
+                    sudo docker-compose up -d
                     '
             """
                 }

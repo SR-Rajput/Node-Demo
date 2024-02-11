@@ -58,9 +58,9 @@ pipeline {
                 // Pull Docker image from Docker Hub
                 sh "docker pull ${DOCKER_HUB_REPO}"
 
-                // SSH into AWS Jenkins server and run Docker Compose command
+                // SSH into AWS Jenkins server and run Docker run command to deploy the application
                 sshagent(['aws-credentials']) {
-                    sh "ssh -o StrictHostKeyChecking=no jenkins@aws-server-ip 'cd /path/to/docker-compose-directory && docker-compose up -d --scale my-node-app=2'"
+                    sh "ssh -o StrictHostKeyChecking=no root@65.2.130.30 'docker run -d --name my-node-app-instance -p 3000:3000 ${DOCKER_HUB_REPO}'"
                 }
             }
         }

@@ -59,7 +59,7 @@ pipeline {
             steps {
                 // Pull Docker image from Docker Hub to /home directory on AWS Jenkins server
                 withCredentials([sshUserPrivateKey(credentialsId: 'aws-credentials', keyFileVariable: 'SSH_KEY_FILE', usernameVariable: 'SSH_USERNAME')]) {
-                    sh "scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${DOCKER_HUB_REPO} ${SSH_USERNAME}@${AWS_SERVER_IP}:~/"
+                    sh "scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${DOCKER_HUB_REPO} root@${AWS_SERVER_IP}:~/"
                 }
             }
         }

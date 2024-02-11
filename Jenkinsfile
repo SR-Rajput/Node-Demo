@@ -20,7 +20,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                   sh 'docker ps'
+                   docker.build('my-node-app')
                 }
             }
         } }

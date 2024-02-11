@@ -4,6 +4,7 @@ pipeline {
    environment {
         DOCKER_IMAGE = 'my-node-app' // Your Docker image name
         DOCKER_HUB_REPO = 'exampleuser/my-node-app' // Your Docker Hub repository name
+        PATH = "$PATH:/snap/bin"
     }
 
     

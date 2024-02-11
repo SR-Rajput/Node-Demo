@@ -24,14 +24,21 @@ pipeline {
         }
 
      
-        stage('Push Docker Image') {
+       
+        stage('Tag Docker Image') {
             steps {
                 script {
                     // Tag Docker image
-                    docker.image(DOCKER_IMAGE).tag("${DOCKER_HUB_REPO}:latest")
+                    docker.tag(DOCKER_IMAGE, "${DOCKER_HUB_REPO}:latest")
+                }
+            }
+        }
 
+        stage('Push Docker Image') {
+            steps {
+                script {
                     // Push Docker image to Docker Hub
-                    docker.withRegistry('', 'docker-hub-credentials') {
+                    docker.withRegistry('', DOCKER_HUB_CREDENTIALS) {
                         docker.image("${DOCKER_HUB_REPO}:latest").push()
                     }
                 }

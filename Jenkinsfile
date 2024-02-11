@@ -61,7 +61,8 @@ pipeline {
                 withCredentials([sshUserPrivateKey(credentialsId: 'aws-credentials', keyFileVariable: 'SSH_KEY_FILE', usernameVariable: 'SSH_USERNAME')]) {
                        sh """
                 ssh -i ${SSH_KEY_FILE} ubuntu@${AWS_SERVER_IP} '
-                    sudo docker pull ${DOCKER_HUB_REPO} &&
+                    sudo docker pull ${DOCKER_HUB_REPO} && sudo docker run -d --name my-node-container1 -p 3000:3000 my-node-app:latest &&
+                    sudo docker run -d --name my-node-container2 -p 3001:3000 my-node-app:latest
                     '
             """
                 }

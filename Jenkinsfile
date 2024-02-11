@@ -51,5 +51,18 @@ pipeline {
                 }
             }
         }
+    
+    
+     stage('Deploy on AWS Jenkins Server') {
+            steps {
+                // Pull Docker image from Docker Hub
+                sh "docker pull ${DOCKER_HUB_REPO}"
+
+                // SSH into AWS Jenkins server and run Docker Compose command
+                sshagent(['aws-credentials']) {
+                    sh "ssh -o StrictHostKeyChecking=no jenkins@aws-server-ip 'cd /path/to/docker-compose-directory && docker-compose up -d --scale my-node-app=2'"
+                }
+            }
+        }
     }
 }

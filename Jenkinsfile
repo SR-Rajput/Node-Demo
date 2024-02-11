@@ -54,12 +54,12 @@ pipeline {
         }
     
     
-stage('Deploy on AWS Jenkins Server') {
+
+        stage('Deploy on AWS Jenkins Server') {
             steps {
-                
-            // Pull Docker image from Docker Hub to /home directory on AWS Jenkins server
-                withCredentials([usernamePassword(credentialsId: 'aws-credentials', usernameVariable: 'SSH_USERNAME', passwordVariable: 'SSH_PASSWORD')]) {
-                    sh "sshpass -p ${SSH_PASSWORD} ssh -o StrictHostKeyChecking=no ${SSH_USERNAME}@${AWS_SERVER_IP} 'docker pull ${DOCKER_HUB_REPO}'"
+                // Pull Docker image from Docker Hub to /home directory on AWS Jenkins server
+                withCredentials([sshUserPrivateKey(credentialsId: 'aws-credentials', keyFileVariable: 'SSH_KEY_FILE', usernameVariable: 'SSH_USERNAME')]) {
+                    sh "scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${DOCKER_HUB_REPO} ${SSH_USERNAME}@${AWS_SERVER_IP}:~/"
                 }
             }
         }

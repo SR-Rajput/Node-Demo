@@ -72,7 +72,9 @@ pipeline {
                 }
             }
         }
-        post {
+       
+    }
+     post {
         success {
             emailext body: 'Your pipeline was successful.',
                      subject: 'Pipeline Success Notification',
@@ -83,6 +85,5 @@ pipeline {
                      subject: 'Pipeline Failure Notification',
                      to: 'abhayp692@gmail.com'
         }
-    }
     }
 }

@@ -78,12 +78,12 @@ pipeline {
         success {
             emailext body: 'Your pipeline was successful.',
                      subject: 'Pipeline Success Notification',
-                     to: 'abhayp692@gmail.com'
+                     to: 'sagarrajput.88007@gmail.com'
         }
         failure {
             emailext body: 'Your pipeline failed.',
                      subject: 'Pipeline Failure Notification',
-                     to: 'abhayp692@gmail.com'
+                     to: 'sagarrajput.88007@gmail.com'
         }
     }
 }
